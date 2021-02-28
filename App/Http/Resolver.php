@@ -233,9 +233,43 @@ class Resolver
         }
 
         try {
-            $downloadUrl = Parser::getDownloadLink($html);
-            $viemoUrl = $this->getRedirectUrl($downloadUrl);
-            $finalUrl = $this->getRedirectUrl($viemoUrl);
+            $vimeoId = Parser::getVimeoId($html);
+            $vimeoPlayerUrl = sprintf(
+                'https://player.vimeo.com/video/%s?speed=1&color=00b1b3&autoplay=1&app_id=%s',
+                $vimeoId,
+                '122963' // laracasts.com app_id on vimeo
+            );
+
+            $req = $this->client->createRequest('GET', $vimeoPlayerUrl, ['verify' => false]);
+
+            $req->addHeader('Referer', 'https://laracasts.com/');
+            $req->addHeader('Accept', '*/*');
+
+            $response = $this->client->send($req);
+
+            $body = $response->getBody()->getContents();
+
+            if (preg_match('/config = ({.+?});/', $body, $matches) !== 1) {
+                return false;
+            };
+
+            $vimeoPlayerConfig = json_decode($matches[1], true);
+            $finalUrl = null;
+            $finalUrlQuality = null;
+
+            foreach ($vimeoPlayerConfig['request']['files']['progressive'] as $file) {
+                $quality = (int) $file['quality'];
+
+                if ($finalUrlQuality === null || $quality > $finalUrlQuality) {
+                    $finalUrl = $file['url'];
+
+                    $finalUrlQuality = $quality;
+                }
+            }
+
+            if ($finalUrl === null) {
+                throw new \RuntimeException("No video URL found!");
+            }
         } catch(NoDownloadLinkException $e) {
             Utils::write(sprintf("Can't download this lesson! :( No download button"));
 

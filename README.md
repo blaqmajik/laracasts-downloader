@@ -1,15 +1,12 @@
-# Laracasts Downloader
-[![Join the chat at https://gitter.im/laracasts-downloader](https://badges.gitter.im/laracasts-downloader.svg)](https://gitter.im/laracasts-downloader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/ac2fdb9a-222b-4244-b08e-af5d2f69845d/mini.png)](https://insight.sensiolabs.com/projects/ac2fdb9a-222b-4244-b08e-af5d2f69845d)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/iamfreee/laracasts-downloader/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/iamfreee/laracasts-downloader/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/iamfreee/laracasts-downloader/badges/build.png?b=master)](https://scrutinizer-ci.com/g/iamfreee/laracasts-downloader/build-status/master)
+# Laracasts Downloader [forked]
 
 Downloads new lessons and series from laracasts if there are updates. Or the whole catalogue.
 
-### LIMITED FUNCTIONALITY NOTE:
-Due to recent changes in the structure of the series page, it is no longer possible to fetch the full catalog
-of lessons and series. Between a lengthy (unknown) delay on algolia indexing, and incomplete list of content
-on the series page, ability to download is severely hindered.
+## About this fork
+
+The original project uses download links provided directly on the laracasts website which will quickly lead to `429 Too Many Requests` errors. In order to enable uninhibited mass leeching again, this fork looks into the Vimeo player configuration for each video and downloads directly from the same source as the embedded player.
+
+This is just a quick hack and will not get any further updates. Also the original maintainer seems to have abandoned PHP, so creating a pull request is probably pointless. So I wanted to at least leave this here.
 
 ## Description
 Syncs your local folder with the laracasts website, when there are new lessons the app download it for you.

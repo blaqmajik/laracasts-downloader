@@ -45,6 +45,17 @@ class Parser
         return LARACASTS_BASE_URL . substr($matches[0],1,-1);
     }
 
+    public static function getVimeoId($html)
+    {
+        preg_match('/vimeo-id="(\d+)"/', $html, $matches);
+
+        if($matches === null || isset($matches[1]) === false) {
+            throw new NoDownloadLinkException();
+        }
+
+        return $matches[1];
+    }
+
     /**
      * Determine if this episode is scheduled for the future.
      *
